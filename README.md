@@ -31,7 +31,10 @@ Before anything, you need to instantiate the client :
     $jenkins = new \JenkinsKhan\Jenkins('http://host.org:8080');
 ```
 
-If your Jenkins needs authentication, you need to pass a URL like this : `'http://user:token@host.org:8080'`.
+If your Jenkins needs authentication, you need to pass a URL like this : 
+```php
+    $jenkins = new \JenkinsKhan\Jenkins('http://host.org:8080', $authUser, $authKey);
+```
 
 
 Here are some examples of how to use it:

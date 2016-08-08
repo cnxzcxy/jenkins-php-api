@@ -45,11 +45,29 @@ class Jenkins
 
     /**
      * @param string $baseUrl
+     * @param string $authUser (optional)
+     * @param string $authKey (optional)
      */
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $authUser = '', $authKey = '')
     {
-        $this->baseUrl = $baseUrl;
+        if (!empty($authUser) && !empty($authKey)) {
+            $baseUrl = parse_url($baseUrl);
+            $scheme   = isset($baseUrl['scheme']) ? $baseUrl['scheme'] . '://' : ''; 
+            $host = isset($baseUrl['host']) ? $baseUrl['host'] : ''; 
+            $port = isset($baseUrl['port']) ? ':' . $baseUrl['port'] : ''; 
+            $user = $authUser; 
+            $pass = $authKey; 
+            $pass = ($user && $pass) ? ":$pass@" : ''; 
+            $path = isset($baseUrl['path']) ? $baseUrl['path'] : ''; 
+            $query = isset($baseUrl['query']) ? '?' . $baseUrl['query'] : ''; 
+            $fragment = isset($baseUrl['fragment']) ? '#' . $baseUrl['fragment'] : ''; 
+            $this->baseUrl = $scheme . $user . $pass . $host . $port . $path . $query . $fragment;
+        }else {
+            $this->baseUrl = $baseUrl;
+        }
+        
     }
+    
 
     /**
      * Enable the use of anti-CSRF crumbs on requests
